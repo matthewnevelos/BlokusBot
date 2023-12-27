@@ -16,7 +16,7 @@ class Shape():
         
     Methods:
     rotate():
-        rotates tiles by 90 degrees counter clockwise about the center tile
+        rotates tiles by 90 degrees clockwise about the center tile
     flip():
         flips tiles about (0,2) axes. (middle horizontal line) 
         - only useful for pieces without reflection symmetry
@@ -30,7 +30,7 @@ class Shape():
         Parameters:
         name : str
             name of shape
-        inner_tiles : List[Tuple]
+        inner_tiles : List[Tuple] or None
             coordinates of non-corner tiles based on the center. The center of the tile which 
             is to be arbritrarily chosen is placed in the center (2,2)
         corner_tiles : List[Tuple]
@@ -38,8 +38,9 @@ class Shape():
         """
         self.name = name
         self.tiles = np.zeros((5,5))
-        for x,y in inner_tiles:
-            self.tiles[x,y] = 1
+        if inner_tiles != None:
+            for x,y in inner_tiles:
+                self.tiles[x,y] = 1
         for x,y in corner_tiles:
             self.tiles[x,y] = 2
         self.score = np.count_nonzero(self.tiles)
@@ -48,7 +49,7 @@ class Shape():
         self.tiles = np.rot90(self.tiles, k=k)
 
     def flip(self):
-        pass
+        self.tiles = np.flip(self.tiles, axis=0)
 
     def _show_piece(self):
         cmap = ListedColormap(['black', 'yellow', 'darkorange'])
@@ -57,16 +58,95 @@ class Shape():
         fig, ax = plt.subplots()
         plt.pcolormesh(self.tiles.reshape(5,5), norm=norm, cmap=cmap)
         major_ticks = np.arange(0, 5, 1)
-        ax.set_xticks(major_ticks)
-        ax.set_yticks(major_ticks)
         ax.grid()
+
+        plt.xticks(major_ticks)
+        plt.yticks(major_ticks)
 
         plt.show()
 
+    def __getitem__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+    
+    def __repr__(self):
+        return self.name
+    
+    def __index__(self):
+        return self.name
+    
+    def __eq__(self, other):
+        if isinstance(other, str):
+            return self.name == other
+        if isinstance(other, Shape):
+            return (self.name, self.tiles, self.score) == (other.name, other.tiles, other.score)
+
+    
+
+"""
+No naming scheme for polyominoes, use your imagination and Shape._show_piece() to see which is which
+1 Tile: i1
+2 Tile: i2
+3 Tile: i3, L3
+4 Tile: i4, L4, T4, Z4, Sq
+5 Tile: i5, L5, T5, Z5, P, X, Fz, V, y, U, W, eta
+"""
+def inititalize_shapes():
+    #1 score pieces
+    i1 = Shape('i1', None, [(2,2)])
+
+    #2 score pieces
+    i2 = Shape('i2', None, [(2,2), (2,3)])
+
+    #3 score pieces
+    i3 = Shape('i3', [(2,2)],
+                     [(2,1), (2,3)])
+    L3 = Shape('L3', None,
+                     [(2,2), (2,3), (3,2)])
+
+    #4 score pieces
+    i4 = Shape('i4', [(2,2), (3,2)],
+                     [(1,2), (4,2)])
+    L4 = Shape('L4', [(2,2)],
+                     [(2,3), (3,3), (2,1)])
+    T4 = Shape('T4', [(2,3)],
+                     [(2,2), (3,3), (1,3)])
+    Z4 = Shape('Z4', None,
+                     [(2,2), (3,2), (2,3), (1,3)])
+    Sq = Shape('Sq', None,
+                     [(2,2), (2,3), (3,2), (3,3)])
+    
+    #5 score pieces
+    i5 = Shape('i5', [(2,2), (2,1), (2,3)],
+                     [(2,0), (2,4)])
+    L5 = Shape('L5', [(2,2), (2,3)],
+                     [(2,1), (3,1), (2,4)])
+    T5 = Shape('T5', [(2,2), (2,3)],
+                     [(2,1), (3,3), (1,3)])
+    Z5 = Shape('Z5', [(2,2)],
+                     [(2,3), (2,1), (3,1), (1,3)])
+    P = Shape('P',   [(2,2)],
+                     [(2,3), (3,3), (3,2), (2,1)])
+    X = Shape('X',   [(2,2)],
+                     [(1,2), (3,2), (2,1), (2,3)])
+    Fz = Shape('Fz', [(2,2)],
+                     [(2,3), (2,1), (3,3), (1,2)])
+    V = Shape('V',   [(2,3), (3,2)],
+                     [(2,2), (4,2), (2,4)])
+    y = Shape('y',   [(2,3), (2,2)],
+                     [(2,1), (2,4), (1,3)])
+    U = Shape('U',   [(2,2)],
+                     [(3,2), (1,2), (3,3), (1,3)])
+    W = Shape('W',   None,
+                     [(2,2), (2,1), (1,2), (1,3), (3,1)])
+    eta = Shape('eta', [(3,2)],
+                         [(2,2), (4,2), (2,3), (1,3)])
+    
+    return [i1,i2,i3,L3,i4,L4,T4,Z4,Sq,i5,L5,T5,Z5,P,X,Fz,V,y,U,W,eta]
+
 
 if __name__ == '__main__':
-    m = [(2,2), (3,2)]
-    c = [(4,2)]
-    shape = Shape('shape1', m, c)
-    shape._show_piece()
-    print(shape.__dict__)
+    shapes = inititalize_shapes()
+    print(shapes.index('i2'))

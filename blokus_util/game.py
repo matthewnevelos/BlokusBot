@@ -24,8 +24,10 @@ def show_board(board, cmap=cmap, norm=norm):
     ax.set_yticks(major_ticks)
     ax.grid(alpha=0.5)
 
+    plt.xlabel([2,3,10])
+
     ax.set_aspect('equal')
-    cbar = plt.colorbar(ticks=[-0.5, 0.5, 1.5, 2.5])
+    cbar = plt.colorbar(ticks=[0.5, 1.5, 2.5])
     cbar.set_ticklabels(['Opponent', 'Empty', 'Player', 'Possible'])
     
     plt.show()
