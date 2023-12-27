@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 from blokus_util import player
 
 
@@ -23,4 +24,9 @@ def test_player_i2xy_error():
         player.i2xy(150)
 
         
+#available tile
+board = np.zeroes(12*12)
+board[4] = 2
 
+def test_available_tile_1():
+    assert player.available_tile
