@@ -52,6 +52,7 @@ def available_tile(board):
                 if np.all(sides != 1):
                     if np.any(corners == 1):
                         board[i] = 2
+    return board
 
             
 
