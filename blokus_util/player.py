@@ -28,9 +28,32 @@ def available_tile(board):
                 if np.all(sides != 1):
                     if np.any(corners == 1):
                         board[i] = 2
-            else:
-                pass
+            elif (x==0):
+                sides = board[[xy2i(x+1, y), xy2i(x, y-1), xy2i(x, y+1)]]
+                corners = board[[xy2i(x+1, y+1), xy2i(x+1, y-1)]]
+                if np.all(sides != 1):
+                    if np.any(corners == 1):
+                        board[i] = 2
+            elif (x==11):
+                sides = board[[xy2i(x-1, y), xy2i(x, y-1), xy2i(x, y+1)]]
+                corners = board[[xy2i(x-1, y-1), xy2i(x-1, y+1)]]
+                if np.all(sides != 1):
+                    if np.any(corners == 1):
+                        board[i] = 2
+            elif(y==0):
+                sides = board[[xy2i(x-1, y), xy2i(x+1, y), xy2i(x, y+1)]]
+                corners = board[[xy2i(x+1, y+1), xy2i(x-1, y+1)]]
+                if np.all(sides != 1):
+                    if np.any(corners == 1):
+                        board[i] = 2
+            elif(y==11):
+                sides = board[[xy2i(x-1, y), xy2i(x+1, y), xy2i(x, y-1), xy2i(x, y+1)]]
+                corners = board[[xy2i(x-1, y-1), xy2i(x+1, y-1)]]
+                if np.all(sides != 1):
+                    if np.any(corners == 1):
+                        board[i] = 2
 
+            
 
 
 # def check_valid(board, shape):
